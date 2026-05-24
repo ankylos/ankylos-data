@@ -2,7 +2,7 @@ name: Scrape Daily Verse
 
 on:
   schedule:
-    - cron: '0 18 * * *'  # 03:00 KST (UTC+9)
+    - cron: '0 15 * * *'  # 00:00 KST (UTC+9)
   workflow_dispatch:       # allow manual trigger
 
 jobs:
