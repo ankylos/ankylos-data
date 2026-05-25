@@ -71,6 +71,8 @@ def scrape(date_str: str) -> dict | None:
 
 
 if __name__ == "__main__":
+    import os
+
     kst = pytz.timezone("Asia/Seoul")
     today = datetime.now(kst).strftime("%Y-%m-%d")
     date_str = sys.argv[1] if len(sys.argv) > 1 else today
@@ -81,6 +83,10 @@ if __name__ == "__main__":
         sys.exit(1)
 
     with open("verse.json", "w", encoding="utf-8") as f:
+        json.dump(result, f, ensure_ascii=False, indent=2)
+
+    os.makedirs("verses", exist_ok=True)
+    with open(f"verses/{date_str}.json", "w", encoding="utf-8") as f:
         json.dump(result, f, ensure_ascii=False, indent=2)
 
     print(f"Saved verse for {date_str}: {result['reference']}")
