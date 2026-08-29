@@ -34,39 +34,13 @@ def scrape(date_str: str) -> dict | None:
         print("No reference found", file=sys.stderr)
         return None
 
-    bible_div = soup.select_one("div.bible")
-    if not bible_div:
-        print("No div.bible found", file=sys.stderr)
-        return None
-
-    parts = []
-    for el in bible_div.children:
-        if not hasattr(el, "name") or not el.name:
-            continue
-        if el.name == "p" and "title" in el.get("class", []):
-            if parts:
-                parts.append("")
-            parts.append(el.get_text(strip=True))
-        elif el.name == "table":
-            th = el.find("th")
-            td = el.find("td")
-            num = th.get_text(strip=True) if th else ""
-            body = td.get_text(strip=True) if td else ""
-            if num == "1" and parts:
-                parts.append("")
-            parts.append(f"{num}. {body}" if num else body)
-
-    text = "\n".join(parts).strip()
-    if not text:
-        print("No verse text parsed", file=sys.stderr)
-        return None
-
+    # Only the citation is published. The 개역개정 verse text on this page is
+    # license-encumbered, so it is deliberately not scraped — the app renders
+    # scripture from its own bundled public-domain 개역한글판.
     return {
         "date": date_str,
         "reference": reference,
         "title": title,
-        "text": text,
-        "translation": "개역개정",
     }
 
 
