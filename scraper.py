@@ -26,21 +26,19 @@ def scrape(date_str: str) -> dict | None:
         return None
 
     span = h1.find("span")
-    em = h1.find("em")
     reference = span.get_text(strip=True).replace(" ", " ") if span else None
-    title = em.get_text(strip=True).replace(" ", " ") if em else ""
 
     if not reference:
         print("No reference found", file=sys.stderr)
         return None
 
     # Only the citation is published. The 개역개정 verse text on this page is
-    # license-encumbered, so it is deliberately not scraped — the app renders
-    # scripture from its own bundled public-domain 개역한글판.
+    # license-encumbered and the <em> subtitle is Duranno's own editorial
+    # content, so neither is scraped — the app renders scripture from its own
+    # bundled public-domain 개역한글판.
     return {
         "date": date_str,
         "reference": reference,
-        "title": title,
     }
 
 
